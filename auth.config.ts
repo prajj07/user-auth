@@ -5,7 +5,7 @@ import { getUserByEmail } from '@/data/user';
  
 export default {
     providers: [
-      Credentials({
+    Credentials({
         async authorize(credentials) {
           const validatedFields = LoginSchema.safeParse(credentials);
   
@@ -14,6 +14,12 @@ export default {
   
             const user = await getUserByEmail(email);
             if (!user || !user.password) return null;
+
+            const passwordsMatch = user.password === password;
+
+            if (passwordsMatch) {
+              return user;
+            }
   
           }
   
