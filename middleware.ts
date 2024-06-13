@@ -12,8 +12,8 @@ import {
  
 const { auth } = NextAuth(authConfig);
 
-  export default auth ((req) => {
-    const { nextUrl } = req;
+  export default auth ((req) => {       
+    const { nextUrl } = req;                           // Middleware function
     const isLoggedIn = !!req.auth;
   
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
