@@ -12,16 +12,16 @@ import {
 const axiosInstance = axios.create();
 
 axiosInstance.interceptors.request.use(
-  (config: any, req: any) => {
-    const { nextUrl } = req;
-    const isLoggedIn = !!req.auth;
+  (config: any) => {
+    const { nextUrl } = config.req;
+    const isLoggedIn = !!config.req.auth;
 
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
     if (isApiAuthRoute && isLoggedIn) {
-      config.headers.Authorization = `Bearer ${req.auth.token}`;
+      config.headers.Authorization = `Bearer ${config.req.auth.token}`;
     }
 
     return config;
