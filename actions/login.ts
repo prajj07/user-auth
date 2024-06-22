@@ -8,38 +8,32 @@ import { getUserByEmail } from "@/data/user";
 import { AuthError } from "next-auth";
 
 export const login = async (
-    values: z.infer<typeof LoginSchema>,
-    callbackUrl?: string | null,
-  ) => {
-    const validatedFields = LoginSchema.safeParse(values);
-  
-    if (!validatedFields.success) {
-      return { error: "Invalid fields!" };
-    }
-  
-    const { email, password } = validatedFields.data;
-  
-    const existingUser = await getUserByEmail(email);
-  
+  values: z.infer<typeof LoginSchema>,
+  callbackUrl?: string | null,
+) => {
+  const validatedFields = LoginSchema.safeParse(values);
 
-    try {
-        await signIn("credentials", {
-          email,
-          password,
-          redirectTo: DEFAULT_LOGIN_REDIRECT,
-        })
-      } catch (error) {
-        if (error instanceof AuthError) {
-          switch (error.type) {
-            case "CredentialsSignin":
-              return { error: "Invalid credentials!" }
-          
+  if (!validatedFields.success) {
+    return { error: "Invalid fields!" };
+  }
 
-          }
-        }
-    
-        throw error;
+  const { email, password } = validatedFields.data;
+  const existingUser = await getUserByEmail(email);
+
+  try {
+    await signIn("credentials", {
+      email,
+      password,
+      redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return { error: "Invalid credentials!" };
       }
+    }
 
-//gh
+    throw error;
+  }
 };
