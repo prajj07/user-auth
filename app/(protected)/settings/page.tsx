@@ -1,4 +1,5 @@
 import { auth, signOut } from "@/auth";
+import Link from "next/link";
 
 const SettingsPage = async () => {
     const session = await auth();
@@ -15,6 +16,11 @@ const SettingsPage = async () => {
                     Signout
                 </button>
             </form>
+            <nav>
+                <Link href="/dashboard">
+                    Dashboard
+                </Link>
+            </nav>
         </div>
     )
 }
