@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import {
@@ -11,8 +12,6 @@ import {
 } from "@/components/ui/menubar";
 import Link from "next/link";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <Menubar className="flex justify-center p-4 bg-gray-100">
           <MenubarMenu>
             <MenubarTrigger>Navigation</MenubarTrigger>
