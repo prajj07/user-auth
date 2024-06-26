@@ -1,15 +1,19 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import {
   Menubar,
+  MenubarCheckboxItem,
   MenubarContent,
   MenubarItem,
   MenubarMenu,
+  MenubarRadioGroup,
+  MenubarRadioItem,
   MenubarSeparator,
   MenubarShortcut,
+  MenubarSub,
+  MenubarSubContent,
+  MenubarSubTrigger,
   MenubarTrigger,
-} from "@/components/ui/menubar";
+} from "@/components/ui/menubar"
 import Link from "next/link";
 
 export default function RootLayout({
@@ -20,24 +24,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Menubar className="flex justify-center p-4 bg-gray-100">
-          <MenubarMenu>
-            <MenubarTrigger>Navigation</MenubarTrigger>
-            <MenubarContent>
-              <MenubarItem asChild>
-                <Link href="/">Home</Link>
-              </MenubarItem>
-              <MenubarItem asChild>
-                <Link href="/dashboard">Dashboard</Link>
-              </MenubarItem>
-              <MenubarItem asChild>
-                <Link href="/settings">Settings</Link>
-              </MenubarItem>
-            </MenubarContent>
-          </MenubarMenu>
-        </Menubar>
+      <Menubar className="flex justify-center p-4 bg-gray-100 space-x-4">
+      <MenubarMenu>
+        <MenubarTrigger><Link href="/">Home</Link></MenubarTrigger>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger><Link href="/dashboard">Dashboard</Link></MenubarTrigger>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger><Link href="/settings">Settings</Link></MenubarTrigger>
+      </MenubarMenu>
+    </Menubar>
         {children}
       </body>
     </html>
   );
 }
+
+
