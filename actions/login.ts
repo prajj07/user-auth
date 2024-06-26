@@ -3,13 +3,12 @@
 import * as z from "zod";
 import { signIn } from "@/auth";
 import { LoginSchema } from "@/schemas";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { getUserByEmail } from "@/data/user";
 import { AuthError } from "next-auth";
 
 export const login = async (
   values: z.infer<typeof LoginSchema>,
-  callbackUrl?: string | null,
+  callbackUrl?: string | null
 ) => {
   const validatedFields = LoginSchema.safeParse(values);
 
@@ -18,19 +17,27 @@ export const login = async (
   }
 
   const { email, password } = validatedFields.data;
-  const existingUser = await getUserByEmail(email);
 
   try {
-    await signIn("credentials", {
+    const response = await signIn("credentials", {
       email,
       password,
-      redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+      callbackUrl: callbackUrl || "/",
+      redirect: false
     });
+
+    if (response.error) {
+      return { error: "Invalid credentials!" };
+    }
+
+    return { success: true };
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
           return { error: "Invalid credentials!" };
+        default:
+          return { error: "Something went wrong!" };
       }
     }
 

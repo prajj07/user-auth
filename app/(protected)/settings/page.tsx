@@ -1,28 +1,48 @@
-import { auth, signOut } from "@/auth";
+"use client";
+
+import { useSession, signOut } from "next-auth/react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setUser, logout } from "@/store/userSlice";
 import Link from "next/link";
 
-const SettingsPage = async () => {
-    const session = await auth();
+const SettingsPage = () => {
+  const { data: session, status } = useSession();
+  const dispatch = useDispatch();
 
-    return (
-        <div>
-            {JSON.stringify(session)}
-            <form action={async () => {
-                "use server";
+  useEffect(() => {
+    if (session?.user) {
+      dispatch(setUser(session.user));
+    }
+  }, [session, dispatch]);
 
-                await signOut();
-            }}> 
-                <button type="submit">
-                    Signout
-                </button>
-            </form>
-            <nav>
-                <Link href="/dashboard">
-                    Dashboard
-                </Link>
-            </nav>
-        </div>
-    )
-}
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (!session) {
+    if (typeof window !== "undefined") {
+      window.location.href = "/auth/login";
+    }
+    return null;
+  }
+
+  return (
+    <div>
+      {JSON.stringify(session)}
+      <button
+        onClick={() => {
+          signOut({ callbackUrl: "/auth/login" });
+          dispatch(logout());
+        }}
+      >
+        Signout
+      </button>
+      <nav>
+        <Link href="/dashboard">Dashboard</Link>
+      </nav>
+    </div>
+  );
+};
 
 export default SettingsPage;
