@@ -1,7 +1,6 @@
-
 "use client";
 
-import { signOut } from "@/auth";
+import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 
 const DashboardPage = () => {
@@ -25,7 +24,7 @@ const DashboardPage = () => {
       <form
         onSubmit={async (e) => {
           e.preventDefault();
-          await signOut();
+          await signOut({ redirect: true, callbackUrl: '/auth/login' });
         }}
       >
         <button type="submit" className="bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">

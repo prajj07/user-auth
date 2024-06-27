@@ -30,17 +30,6 @@ const SettingsPage = () => {
   return (
     <div>
       {JSON.stringify(session)}
-      <button
-        onClick={() => {
-          signOut({ callbackUrl: "/auth/login" });
-          dispatch(logout());
-        }}
-      >
-        Signout
-      </button>
-      <nav>
-        <Link href="/dashboard">Dashboard</Link>
-      </nav>
     </div>
   );
 };
