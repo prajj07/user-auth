@@ -1,4 +1,3 @@
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
@@ -24,7 +23,7 @@ const userSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.error = null;
-    }
+    },
   },
 });
 

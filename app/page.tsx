@@ -1,20 +1,20 @@
-
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { LoginButton } from "@/components/auth/login-button";
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { LoginButton } from '@/components/auth/login-button';
 
 export default function Home() {
   return (
     <main className="flex h-full flex-col items-center justify-center bg-blue-200">
       <div className="space-y-6 text-center">
-        <h1 className={cn("text-6xl font-semibold text-gray-600 drop-shadow-md")}>
-          Auth
-        </h1>
+        <h1 className={cn('text-6xl font-semibold text-gray-600 drop-shadow-md')}>Auth</h1>
         <p className="text-gray-500 text-lg">Authentication service</p>
       </div>
       <LoginButton>
-        <Button variant="outline" className="size-lg">
-          Sign in 
+        <Button
+          variant="outline"
+          className="size-lg"
+        >
+          Sign in
         </Button>
       </LoginButton>
     </main>

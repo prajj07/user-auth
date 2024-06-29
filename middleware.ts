@@ -32,7 +32,7 @@ export default auth((req) => {
 
   if (isProtectedRoute) {
     if (!isLoggedIn) {
-      return Response.redirect(new URL("/auth/login", nextUrl));
+      return Response.redirect(new URL('/auth/login', nextUrl));
     }
     return null;
   }
@@ -41,5 +41,5 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };
