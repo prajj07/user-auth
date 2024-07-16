@@ -17,20 +17,45 @@ import {
 import { CardWrapper } from './card-wrapper';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { register } from '@/actions/register';
+import axios from 'axios';
 
 export const RegisterForm = () => {
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      email: '',
+      firstName: '',
+      lastName: '',
+      userName: '',
       password: '',
-      name: '',
+      email: '',
+      investorAccountType: 'INDIVIDUAL',
+      accountName: '',
+      contactNumber: '',
+      contactAddress: '',
     },
   });
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-    register(values);
+    axios({
+      method: 'post',
+      url: 'https://api.staging.dataequinox.com/findash/user/investor/signup',
+      data: values,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response: any) => {
+      console.log(response.data);
+    })
+    .catch((error: any) => {
+      if (error.response) {
+        console.error('Error response:', error.response.data);
+      } else if (error.request) {
+        console.error('Error request:', error.request);
+      } else {
+        console.error('Error message:', error.message);
+      }
+    });
   };
 
   return (
@@ -40,23 +65,42 @@ export const RegisterForm = () => {
       backButtonHref="/auth/login"
     >
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6 "
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
             <FormField
               control={form.control}
-              name="name"
+              name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="prajwal"
-                      type="text"
-                    />
+                    <Input {...field} placeholder="First Name" type="text" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Last Name" type="text" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="userName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Username" type="text" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -69,17 +113,12 @@ export const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="prajwal.m@example.com"
-                      type="email"
-                    />
+                    <Input {...field} placeholder="Email" type="email" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="password"
@@ -87,11 +126,59 @@ export const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="########"
-                      type="password"
-                    />
+                    <Input {...field} placeholder="Password" type="password" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="investorAccountType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Investor Account Type</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="INDIVIDUAL or CORPORATE" type="text" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="accountName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Account Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Account Name" type="text" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="contactNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contact Number</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Contact Number" type="text" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="contactAddress"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contact Address</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Contact Address" type="text" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -99,10 +186,7 @@ export const RegisterForm = () => {
             />
           </div>
 
-          <Button
-            type="submit"
-            className="w-full"
-          >
+          <Button type="submit" className="w-full">
             Register
           </Button>
         </form>

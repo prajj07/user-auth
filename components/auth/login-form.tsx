@@ -3,9 +3,9 @@
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-import { LoginSchema } from '@/schemas';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/store/index';
+import { loginUser, selectError, selectLoading } from '@/store/userSlice';
 import {
   Form,
   FormControl,
@@ -17,7 +17,7 @@ import {
 import { CardWrapper } from './card-wrapper';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { login } from '@/actions/login';
+import { LoginSchema } from '@/schemas';
 
 export const LoginForm = () => {
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -28,8 +28,12 @@ export const LoginForm = () => {
     },
   });
 
+  const dispatch = useDispatch<AppDispatch>();
+  const error = useSelector(selectError);
+  const loading = useSelector(selectLoading);
+
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    login(values);
+    dispatch(loginUser(values));
   };
 
   return (
@@ -41,7 +45,7 @@ export const LoginForm = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6 "
+          className="space-y-6"
         >
           <div className="space-y-4">
             <FormField
@@ -61,7 +65,6 @@ export const LoginForm = () => {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="password"
@@ -80,12 +83,13 @@ export const LoginForm = () => {
               )}
             />
           </div>
-
+          {error && <div className="text-red-500">{error}</div>}
           <Button
             type="submit"
             className="w-full"
+            disabled={loading}
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'}
           </Button>
         </form>
       </Form>

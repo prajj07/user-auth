@@ -9,6 +9,7 @@ import Link from 'next/link';
 const SettingsPage = () => {
   const { data: session, status } = useSession();
   const dispatch = useDispatch();
+  
 
   useEffect(() => {
     if (session?.user) {
